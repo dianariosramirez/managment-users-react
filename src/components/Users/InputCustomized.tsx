@@ -13,7 +13,6 @@ const InputTextCustom = ({
   errors,
   helperText,
   placeholder,
-  value,
   trigger,
 }: TextInputProps) => {
   return (

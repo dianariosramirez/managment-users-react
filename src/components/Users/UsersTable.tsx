@@ -9,9 +9,17 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Column, Filters, SortBy, UserData } from "@/lib/types";
-import { Box, Button, Chip, Paper } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  IconButton,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { users } from "@/lib/api/database";
 import { TableActions } from "./TableActions";
+import { Delete, Edit } from "@mui/icons-material";
 
 const columns: Column[] = [
   { id: "name", label: "Name", width: "30%", align: "left" },
@@ -77,7 +85,7 @@ export const UsersTable = () => {
         columns={columns}
         setSearchQuery={setSearchQuery}
       />
-      <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="Users table">
           <TableHead>
             <TableRow>
@@ -94,23 +102,36 @@ export const UsersTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {visibleUsers.map((row) => (
-              <TableRow hover key={row.email}>
-                <TableCell> {row.name}</TableCell>
-                <TableCell> {row.email}</TableCell>
-                <TableCell> {row.phoneNumber}</TableCell>
-                <TableCell> {row.role}</TableCell>
-                <TableCell>
-                  <Chip
-                    label={row.status}
-                    color={row.status === "Active" ? "primary" : "secondary"}
-                  />
-                </TableCell>
-                <TableCell>
-                  <Button>Edit</Button>
+            {!visibleUsers.length ? (
+              <TableRow>
+                <TableCell colSpan={columns.length} align="center">
+                  <Typography>No users found</Typography>
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              visibleUsers.map((row) => (
+                <TableRow hover key={row.email}>
+                  <TableCell> {row.name}</TableCell>
+                  <TableCell> {row.email}</TableCell>
+                  <TableCell> {row.phoneNumber}</TableCell>
+                  <TableCell> {row.role}</TableCell>
+                  <TableCell>
+                    <Chip
+                      label={row.status}
+                      color={row.status === "Active" ? "primary" : "secondary"}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <IconButton sx={{ ":hover": { color: "primary.main" } }}>
+                      <Edit />
+                    </IconButton>
+                    <IconButton sx={{ ":hover": { color: "error.main" } }}>
+                      <Delete />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>

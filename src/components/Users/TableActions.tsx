@@ -6,7 +6,13 @@ import {
   Popover,
   TextField,
 } from "@mui/material";
-import { FilterList, LowPriority, Search } from "@mui/icons-material";
+import {
+  FilterList,
+  LowPriority,
+  Search,
+  ArrowUpward,
+  ArrowDownward,
+} from "@mui/icons-material";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { Column, Filters, SortBy } from "@/lib/types";
 import { NewUserAction } from "./NewUserAction";
@@ -100,7 +106,7 @@ export const TableActions = ({
           onClose={handleCloseFilter}
           anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         >
-          <Box sx={{ p: 2 }}>
+          <Box sx={{ p: 2, minWidth: 300 }}>
             <TextField
               select
               label="Role"
@@ -143,22 +149,39 @@ export const TableActions = ({
           onClose={handleCloseSort}
           anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
         >
-          <Box sx={{ p: 2 }}>
-            {columns.map((column) => (
-              <Button
-                key={column.id}
-                fullWidth
-                onClick={() =>
-                  setSortBy({
-                    column: column.id,
-                    order: sortBy.order === "asc" ? "desc" : "asc",
-                  })
-                }
-              >
-                Sort by {column.label} (
-                {sortBy.order === "asc" ? "Asc" : "Desc"})
-              </Button>
-            ))}
+          <Box
+            sx={{
+              p: 2,
+              minWidth: 200,
+              display: "flex",
+              gap: 2,
+              flexDirection: "column",
+            }}
+          >
+            {columns
+              .filter((column) => column.id !== "actions")
+              .map((column) => (
+                <Button
+                  key={column.id}
+                  onClick={() =>
+                    setSortBy({
+                      column: column.id,
+                      order: sortBy.order === "asc" ? "desc" : "asc",
+                    })
+                  }
+                  startIcon={
+                    sortBy.column === column.id ? (
+                      sortBy.order === "asc" ? (
+                        <ArrowUpward />
+                      ) : (
+                        <ArrowDownward />
+                      )
+                    ) : null
+                  }
+                >
+                  {column.label}
+                </Button>
+              ))}
           </Box>
         </Popover>
         <NewUserAction />
