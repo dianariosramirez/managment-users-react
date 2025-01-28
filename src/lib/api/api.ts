@@ -1,4 +1,4 @@
-import { FilterVariables, UserData } from "../types";
+import { FilterVariables, UserCompleteData } from "../types";
 import { users } from "./database";
 
 const API_KEY_LOCAL_STORAGE = "users-table-data";
@@ -9,16 +9,21 @@ const usersTable =
     : users;
 
 export class API {
-  static GetUsers = (variables: FilterVariables): UserData[] => {
-    const { search, email, name, role, status, pageSize, pageIndex } =
+  static GetUsers = (variables: FilterVariables): UserCompleteData[] => {
+    const { search, email, name, role, status, pageSize, pageIndex, sortBy } =
       variables;
 
-    const filteredUsers = usersTable.filter((user: UserData) => {
-      if (search && user.name.toLowerCase().includes(search.toLowerCase()))
+    const filteredUsers = usersTable.filter((user: UserCompleteData) => {
+      if (
+        search &&
+        (user.firstName.toLowerCase().includes(search.toLowerCase()) ||
+          user.lastName.toLowerCase().includes(search.toLowerCase()) ||
+          user.email.toLowerCase().includes(search.toLowerCase()))
+      )
         return true;
       if (email && user.email.toLowerCase().includes(email.toLowerCase()))
         return true;
-      if (name && user.name.toLowerCase().includes(name.toLowerCase()))
+      if (name && user.firstName.toLowerCase().includes(name.toLowerCase()))
         return true;
       if (role && user.role.toLowerCase().includes(role.toLowerCase()))
         return true;
@@ -28,16 +33,56 @@ export class API {
       return false;
     });
 
+    const sortedUsers = (filteredUsers as UserCompleteData[]).sort(
+      (userA, userB) => {
+        const { column, order } = sortBy;
+
+        if (!column || !(column in userA)) return 0;
+        const valueA =
+          column === "name"
+            ? userA.firstName
+            : userA[column as keyof UserCompleteData];
+        const valueB =
+          column === "name"
+            ? userB.firstName
+            : userB[column as keyof UserCompleteData];
+
+        if (order === "asc")
+          return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+        return valueA < valueB ? 1 : valueA > valueB ? -1 : 0;
+      }
+    );
+
     const offset = pageIndex * pageSize;
-    return filteredUsers.slice(offset, offset + pageSize);
+    return sortedUsers.slice(offset, offset + pageSize);
   };
 
   static CountTotalUsers = (): number => {
     return usersTable.length;
   };
 
-  static AddUser = (newUser: UserData) => {
+  static AddUser = (newUser: UserCompleteData) => {
     usersTable.push(newUser);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(API_KEY_LOCAL_STORAGE, JSON.stringify(usersTable));
+    }
+  };
+
+  static UpdateUser = (updatedUser: UserCompleteData) => {
+    const index = usersTable.findIndex(
+      (user: UserCompleteData) => user.id === updatedUser.id
+    );
+    usersTable[index] = updatedUser;
+    if (typeof window !== "undefined") {
+      localStorage.setItem(API_KEY_LOCAL_STORAGE, JSON.stringify(usersTable));
+    }
+  };
+
+  static DeleteUser = (userId: string) => {
+    const index = usersTable.findIndex(
+      (user: UserCompleteData) => user.id === userId
+    );
+    usersTable.splice(index, 1);
     if (typeof window !== "undefined") {
       localStorage.setItem(API_KEY_LOCAL_STORAGE, JSON.stringify(usersTable));
     }

@@ -1,5 +1,8 @@
 function createUser(
-  name: string,
+  id: string,
+  firstName: string,
+  lastName: string,
+  middleName: string,
   email: string,
   phoneNumber: number,
   role: string,
@@ -13,7 +16,10 @@ function createUser(
   actions: boolean
 ) {
   return {
-    name,
+    id,
+    firstName,
+    lastName,
+    middleName,
     email,
     phoneNumber,
     role,
@@ -32,7 +38,10 @@ const generateUsers = () => {
   const users = [];
   for (let i = 1; i <= 50; i++) {
     const user = createUser(
+      crypto.randomUUID(),
       `User ${i}`,
+      `Lastname ${i}`,
+      "",
       `user${i}@example.com`,
       1234567890 + i,
       i % 2 === 0 ? "Admin" : "User",
@@ -42,7 +51,7 @@ const generateUsers = () => {
       `Neighborhood ${i}`,
       `City ${i}`,
       `PostalCode ${10000 + i}`,
-      `https://randomuser.me/api/portraits/men/${i}.jpg`,
+      `https://robohash.org/${i}`,
       i % 2 === 0
     );
     users.push(user);

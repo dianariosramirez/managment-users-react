@@ -62,6 +62,7 @@ export interface FilterVariables extends Filters {
   name?: string;
   pageSize: number;
   pageIndex: number;
+  sortBy: SortBy;
 }
 
 /**
@@ -93,7 +94,10 @@ export interface UserData {
 }
 
 export interface UserCompleteData {
-  name: string;
+  id: string;
+  firstName: string;
+  lastName: string;
+  middleName: string;
   email: string;
   phoneNumber: string;
   role: string;
@@ -104,4 +108,5 @@ export interface UserCompleteData {
   neighborhood: string;
   city: string;
   postalCode: string;
+  photo: string;
 }

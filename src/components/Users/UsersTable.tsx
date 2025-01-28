@@ -6,6 +6,7 @@ import {
   Filters,
   FilterVariables,
   SortBy,
+  UserCompleteData,
   UserData,
 } from "@/lib/types";
 import {
@@ -25,6 +26,8 @@ import {
 import { TableActions } from "./TableActions";
 import { Delete, Edit } from "@mui/icons-material";
 import { UserService } from "@/lib/services/UserService.service";
+import { ModalUserForm } from "./ModalUserForm";
+import { set } from "react-hook-form";
 
 const columns: Column[] = [
   { id: "name", label: "Name", width: "30%", align: "left" },
@@ -42,8 +45,12 @@ export const UsersTable = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<Filters>({ role: "", status: "" });
   const [sortBy, setSortBy] = useState<SortBy>({ column: null, order: "asc" });
-  const [usersList, setUsersList] = useState<UserData[]>([]);
+  const [usersList, setUsersList] = useState<UserCompleteData[]>([]);
   const [totalUsers, setTotalUsers] = useState<number>(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<UserCompleteData | null>(
+    null
+  );
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPageIndex(newPage);
@@ -65,6 +72,7 @@ export const UsersTable = () => {
           status: filters.status,
           pageSize: rowsPerPage,
           pageIndex: pageIndex,
+          sortBy: sortBy,
         };
 
         const [usersData, totalUsers] = await Promise.all([
@@ -72,15 +80,7 @@ export const UsersTable = () => {
           UserService.CountTotalUsers(),
         ]);
 
-        const sortedUsers = (usersData as UserData[]).sort((a, b) => {
-          if (!sortBy.column || !(sortBy.column in a)) return 0;
-          const valueA = a[sortBy.column as keyof UserData];
-          const valueB = b[sortBy.column as keyof UserData];
-          if (sortBy.order === "asc") return valueA > valueB ? 1 : -1;
-          return valueA < valueB ? 1 : -1;
-        });
-
-        setUsersList(sortedUsers);
+        setUsersList(usersData);
         setTotalUsers(totalUsers);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -90,7 +90,32 @@ export const UsersTable = () => {
     };
 
     fetchUsers();
-  }, [searchQuery, filters, rowsPerPage, pageIndex]);
+  }, [searchQuery, filters, rowsPerPage, pageIndex, sortBy]);
+
+  const refreshTable = async () => {
+    const newUsers = await UserService.GetUsersData({
+      search: searchQuery,
+      role: filters.role,
+      status: filters.status,
+      pageSize: rowsPerPage,
+      pageIndex: pageIndex,
+      sortBy: sortBy,
+    });
+
+    const totalUsersRefresh = await UserService.CountTotalUsers();
+    setUsersList(newUsers);
+    setTotalUsers(totalUsersRefresh);
+  };
+
+  const handleEditUser = (user: UserCompleteData) => {
+    setIsModalOpen(true);
+    setSelectedUser(user);
+  };
+
+  const handleDeleteUser = async (id: string) => {
+    await UserService.DeleteUser(id);
+    refreshTable();
+  };
 
   return (
     <Box
@@ -143,7 +168,7 @@ export const UsersTable = () => {
             ) : (
               usersList.map((row) => (
                 <TableRow hover key={row.email}>
-                  <TableCell> {row.name}</TableCell>
+                  <TableCell> {`${row.firstName} ${row.lastName}`}</TableCell>
                   <TableCell> {row.email}</TableCell>
                   <TableCell> {row.phoneNumber}</TableCell>
                   <TableCell> {row.role}</TableCell>
@@ -154,10 +179,16 @@ export const UsersTable = () => {
                     />
                   </TableCell>
                   <TableCell>
-                    <IconButton sx={{ ":hover": { color: "primary.main" } }}>
+                    <IconButton
+                      sx={{ ":hover": { color: "primary.main" } }}
+                      onClick={() => handleEditUser(row)}
+                    >
                       <Edit />
                     </IconButton>
-                    <IconButton sx={{ ":hover": { color: "error.main" } }}>
+                    <IconButton
+                      sx={{ ":hover": { color: "error.main" } }}
+                      onClick={() => handleDeleteUser(row.id)}
+                    >
                       <Delete />
                     </IconButton>
                   </TableCell>
@@ -175,6 +206,13 @@ export const UsersTable = () => {
         page={pageIndex}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      <ModalUserForm
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        userData={selectedUser}
+        type="edit"
+        refreshTable={refreshTable}
       />
     </Box>
   );

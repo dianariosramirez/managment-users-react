@@ -12,10 +12,11 @@ import {
   Search,
   ArrowUpward,
   ArrowDownward,
+  PersonAddAlt,
 } from "@mui/icons-material";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { Column, Filters, SortBy } from "@/lib/types";
-import { NewUserAction } from "./NewUserAction";
+import { ModalUserForm } from "./ModalUserForm";
 
 interface TableActionsProps {
   filters: Filters;
@@ -39,6 +40,7 @@ export const TableActions = ({
   const [sortAnchorEl, setSortAnchorEl] = useState<HTMLButtonElement | null>(
     null
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value.toLowerCase());
@@ -58,6 +60,10 @@ export const TableActions = ({
 
   const handleCloseSort = () => {
     setSortAnchorEl(null);
+  };
+
+  const handleAddUser = () => {
+    setIsModalOpen(true);
   };
 
   return (
@@ -184,7 +190,19 @@ export const TableActions = ({
               ))}
           </Box>
         </Popover>
-        <NewUserAction />
+        <Button
+          variant="contained"
+          onClick={handleAddUser}
+          startIcon={<PersonAddAlt />}
+        >
+          Add User
+        </Button>
+        <ModalUserForm
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          userData={null}
+          type="add"
+        />
       </Box>
     </Box>
   );

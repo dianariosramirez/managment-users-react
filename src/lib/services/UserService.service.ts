@@ -1,8 +1,10 @@
 import { API } from "../api/api";
-import { FilterVariables, UserData } from "../types";
+import { FilterVariables, UserCompleteData } from "../types";
 
 export class UserService {
-  static GetUsersData = (variables: FilterVariables): Promise<UserData[]> => {
+  static GetUsersData = (
+    variables: FilterVariables
+  ): Promise<UserCompleteData[]> => {
     console.log("service: Fetching user data...");
 
     return new Promise((resolve) => {
@@ -25,12 +27,34 @@ export class UserService {
     });
   };
 
-  static AddNewUser = (newUserData: UserData) => {
+  static AddNewUser = (newUserData: UserCompleteData) => {
     console.log("service: Adding new user...");
 
     return new Promise((resolve) => {
       setTimeout(() => {
         const result = API.AddUser(newUserData);
+        resolve(result);
+      }, 500);
+    });
+  };
+
+  static UpdateUser = (updatedUserData: UserCompleteData) => {
+    console.log("service: Updating user...");
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const result = API.UpdateUser(updatedUserData);
+        resolve(result);
+      }, 500);
+    });
+  };
+
+  static DeleteUser = (userId: string) => {
+    console.log("service: Deleting user...");
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const result = API.DeleteUser(userId);
         resolve(result);
       }, 500);
     });
@@ -46,7 +70,7 @@ export class UserService {
     formData.append("name", `${firstName}-${lastName}`);
 
     const response = await fetch(
-      `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMAGEBB_API_KEY}`,
+      `https://api.imgbb.com/1/upload?key=490e5f7d56bcc9f0919a001d4400b073`,
       {
         method: "POST",
         body: formData,
