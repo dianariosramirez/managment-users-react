@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputCustomized } from "./InputCustomized";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
+import { UserService } from "@/lib/services/UserService.service";
 
 type Values = z.infer<typeof userSchema>;
 
@@ -51,6 +52,7 @@ export const NewUserAction = () => {
     control,
     handleSubmit,
     trigger,
+    getValues,
     formState: { errors },
     setValue,
   } = useForm<Values>({ defaultValues, resolver: zodResolver(userSchema) });
@@ -63,19 +65,49 @@ export const NewUserAction = () => {
     setModalOpen(false);
   };
 
-  const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPhoto(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        const userFirstName = getValues("firstName");
+        const userLastName = getValues("lastName");
+
+        const imageUrl = await UserService.UploadUserPhoto(
+          file,
+          userFirstName,
+          userLastName
+        );
+        setPhoto(imageUrl);
+      } catch (error) {
+        console.error("Error al subir la foto:", error);
+      }
     }
   };
 
   const onSubmit = (values: Values) => {
-    console.log(values);
+    try {
+      const newValues = {
+        name: `${values.firstName} ${values.middleName} ${values.lastName}`,
+        email: values.email,
+        phoneNumber: values.phoneNumber,
+        role: values.role,
+        status: "Active",
+        number: values.number,
+        street: values.street,
+        neighborhood: values.neighborhood,
+        city: values.city,
+        postalCode: values.postalCode,
+        photo: photo || "",
+        actions: true,
+      };
+
+      UserService.AddNewUser(newValues);
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error al agregar usuario:", error);
+    }
   };
 
   const handleMarkerDragEnd = (event: google.maps.MapMouseEvent) => {

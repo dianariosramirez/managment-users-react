@@ -86,8 +86,22 @@ export interface SelectInputProps extends BaseInputProps {
 export interface UserData {
   name: string;
   email: string;
-  phoneNumber: number;
+  phoneNumber: string;
   role: string;
   status: string;
   actions: boolean;
+}
+
+export interface UserCompleteData {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  role: string;
+  status: string;
+  actions: boolean;
+  number: string;
+  street: string;
+  neighborhood: string;
+  city: string;
+  postalCode: string;
 }
