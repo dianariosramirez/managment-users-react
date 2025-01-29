@@ -23,8 +23,8 @@ const userSchema = z.object({
     .string()
     .min(1, { message: "Neighborhood is required and cannot be empty." }),
   city: z.string().min(1, { message: "City is required and cannot be empty." }),
-  postalCode: z.string().regex(/^\d{5}(-\d{4})?$/, {
-    message: "Postal Code must be a valid format (e.g., 12345 or 12345-6789).",
+  postalCode: z.string().regex(/^\d{5}$/, {
+    message: "Postal Code must be a valid format (e.g., 12345).",
   }),
 });
 
