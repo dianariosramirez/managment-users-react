@@ -33,11 +33,10 @@ export class API {
       return false;
     });
 
-    const sortedUsers = (filteredUsers as UserCompleteData[]).sort(
-      (userA, userB) => {
-        const { column, order } = sortBy;
+    const { column, order } = sortBy;
 
-        if (!column || !(column in userA)) return 0;
+    const sortedUsers = (filteredUsers as UserCompleteData[]).toSorted(
+      (userA, userB) => {
         const valueA =
           column === "name"
             ? userA.firstName
@@ -47,12 +46,17 @@ export class API {
             ? userB.firstName
             : userB[column as keyof UserCompleteData];
 
+        if (column === "name") {
+          console.log({ valueA, valueB });
+        }
+        console.log({ valueA, valueB });
         if (order === "asc")
           return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
         return valueA < valueB ? 1 : valueA > valueB ? -1 : 0;
       }
     );
 
+    console.log("sorttr", sortedUsers);
     const offset = pageIndex * pageSize;
     return sortedUsers.slice(offset, offset + pageSize);
   };

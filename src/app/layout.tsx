@@ -4,6 +4,7 @@ import "./globals.css";
 import { Box } from "@mui/material";
 import { MainNav } from "@/components/Layout/MainNav";
 import ThemeProviderApp from "@/components/Layout/ThemeProvider";
+import { ToastAlert } from "@/components/Layout/ToastAlert";
 
 export const metadata: Metadata = {
   title: "Technical Test",
@@ -36,6 +37,7 @@ export default function RootLayout({
               justifyContent: "center",
               alignItems: "center",
               height: "100vh",
+              backgroundColor: "background.default",
             }}
           >
             <MainNav />
@@ -50,14 +52,9 @@ export default function RootLayout({
               }}
             >
               {children}
+              <ToastAlert />
             </Box>
           </Box>
-          {/* <Box display="flex" flexDirection="column" minHeight="100vh">
-            <MainNav />
-            <Box sx={{ flex: 1, m: 4 }}>
-              {children}
-              </Box>
-          </Box> */}
         </ThemeProviderApp>
       </body>
     </html>

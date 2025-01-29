@@ -28,6 +28,7 @@ import { Delete, Edit } from "@mui/icons-material";
 import { UserService } from "@/lib/services/UserService.service";
 import { ModalUserForm } from "./ModalUserForm";
 import { set } from "react-hook-form";
+import useAppStore from "@/lib/store/useAppStore";
 
 const columns: Column[] = [
   { id: "name", label: "Name", width: "30%", align: "left" },
@@ -51,6 +52,8 @@ export const UsersTable = () => {
   const [selectedUser, setSelectedUser] = useState<UserCompleteData | null>(
     null
   );
+
+  const { setSnackbarProps } = useAppStore();
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPageIndex(newPage);
@@ -114,6 +117,11 @@ export const UsersTable = () => {
 
   const handleDeleteUser = async (id: string) => {
     await UserService.DeleteUser(id);
+    setSnackbarProps({
+      open: true,
+      message: "User deleted successfully",
+      severity: "success",
+    });
     refreshTable();
   };
 
@@ -175,7 +183,7 @@ export const UsersTable = () => {
                   <TableCell>
                     <Chip
                       label={row.status}
-                      color={row.status === "Active" ? "primary" : "secondary"}
+                      color={row.status === "Active" ? "secondary" : "primary"}
                     />
                   </TableCell>
                   <TableCell>

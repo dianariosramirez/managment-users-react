@@ -10,15 +10,16 @@ import {
   Modal,
   Typography,
 } from "@mui/material";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import userSchema from "@/lib/forms/userSchema";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputCustomized } from "./InputCustomized";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { UserService } from "@/lib/services/UserService.service";
 import { UserCompleteData } from "@/lib/types";
+import useAppStore from "@/lib/store/useAppStore";
 
 interface ModalUserFormProps {
   isModalOpen: boolean;
@@ -56,6 +57,8 @@ export const ModalUserForm = ({
     lat: 17.073,
     lng: -96.726,
   });
+
+  const { setSnackbarProps } = useAppStore();
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
@@ -138,14 +141,28 @@ export const ModalUserForm = ({
 
       if (type === "edit" && userData) {
         await UserService.UpdateUser(updatedValues);
+        setSnackbarProps({
+          open: true,
+          message: "User updated successfully",
+          severity: "success",
+        });
+        refreshTable && refreshTable();
       } else {
         await UserService.AddNewUser(updatedValues);
+        setSnackbarProps({
+          open: true,
+          message: "User added successfully",
+          severity: "success",
+        });
+        refreshTable && refreshTable();
       }
-
-      refreshTable && refreshTable();
       handleCloseModal();
     } catch (error) {
-      console.error("Error adding or updating user:", error);
+      setSnackbarProps({
+        open: true,
+        message: "Error adding or updating user",
+        severity: "error",
+      });
     }
   };
 
@@ -213,7 +230,7 @@ export const ModalUserForm = ({
           }}
         >
           <Typography variant="h6" component="h2">
-            New User
+            {type === "add" ? "New user" : "Update user"}
           </Typography>
         </Box>
         <Box sx={{ display: "flex", justifyContent: "center", mb: 4 }}>
