@@ -106,10 +106,10 @@ Hubo dificultades en la aplicación consistente de los temas de Material UI, esp
 
 ## Vista principal de la UI del proyecto
 
-https://managment-users-react-test.vercel.app/
+Puedes probar el proyecto aquí: https://managment-users-react-test.vercel.app/
 
 ![alt text](image.png)
 
 ## &nbsp;
 
-¡Gracias por revisar mi proyecto! Para cualquier pregunta o feedback, no dudes en contactarme.
+Gracias por revisar mi proyecto. Para cualquier pregunta o feedback, no dudes en contactarme.
