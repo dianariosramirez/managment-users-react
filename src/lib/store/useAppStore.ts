@@ -14,6 +14,7 @@ interface AppState {
   setSnackbarProps: (props: SnackbarProps) => void;
 }
 
+// App store to manage global state for the app
 const useAppStore = create<AppState>()(
   persist(
     (set) => ({

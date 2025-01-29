@@ -13,6 +13,8 @@ export class API {
     const { search, email, name, role, status, pageSize, pageIndex, sortBy } =
       variables;
 
+    // Filter users based on provided criteria
+
     const filteredUsers = usersTable.filter((user: UserCompleteData) => {
       if (
         search &&
@@ -34,6 +36,8 @@ export class API {
     });
 
     const { column, order } = sortBy;
+
+    // Sorting and pagination logic
 
     const sortedUsers = (filteredUsers as UserCompleteData[]).toSorted(
       (userA, userB) => {

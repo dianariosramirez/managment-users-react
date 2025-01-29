@@ -9,6 +9,8 @@ interface InputCustomizedProps {
   menuList?: { value: string; label: string }[];
 }
 
+// User form fields to be used in the form
+
 export const userForm: InputCustomizedProps[] = [
   {
     nameField: "First Name: *",

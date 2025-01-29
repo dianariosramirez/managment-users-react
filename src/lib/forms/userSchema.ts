@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+// Define the schema for the user form fields using zod
+
 const userSchema = z.object({
   firstName: z
     .string()

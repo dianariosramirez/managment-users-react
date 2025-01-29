@@ -1,6 +1,7 @@
 import { API } from "../api/api";
 import { FilterVariables, UserCompleteData } from "../types";
 
+// This service is responsible for handling all the logic related to users data
 export class UserService {
   static GetUsersData = (
     variables: FilterVariables

@@ -7,6 +7,8 @@ import { Box, MenuItem, TextField, Typography } from "@mui/material";
 import React from "react";
 import { Controller } from "react-hook-form";
 
+// Custom input component for text input fields in the form using react-hook-form and material-ui TextField
+
 const InputTextCustom = ({
   name,
   control,

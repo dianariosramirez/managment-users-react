@@ -58,8 +58,10 @@ export const ModalUserForm = ({
     lng: -96.726,
   });
 
+  // Get the snackbar props from the store
   const { setSnackbarProps } = useAppStore();
 
+  // Load Google Maps API
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
     libraries: ["places"],
@@ -98,6 +100,7 @@ export const ModalUserForm = ({
     setIsModalOpen(false);
   };
 
+  // Upload photo to imgBB and set the URL to the photo state variable
   const handlePhotoChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -171,6 +174,7 @@ export const ModalUserForm = ({
     const lng = event.latLng?.lng() || 0;
     setAddressCoords({ lat, lng });
 
+    // Get address from coordinates using Google Maps Geocoder API and fill the form
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ location: { lat, lng } }, (results, status) => {
       if (status === "OK" && results?.[0]) {

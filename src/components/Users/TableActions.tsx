@@ -27,6 +27,8 @@ interface TableActionsProps {
   setSearchQuery: Dispatch<SetStateAction<string>>;
 }
 
+// Table actions component to filter, sort, and search users
+
 export const TableActions = ({
   filters,
   setFilters,

@@ -26,7 +26,6 @@ import { TableActions } from "./TableActions";
 import { Delete, Edit } from "@mui/icons-material";
 import { UserService } from "@/lib/services/UserService.service";
 import { ModalUserForm } from "./ModalUserForm";
-import { set } from "react-hook-form";
 import useAppStore from "@/lib/store/useAppStore";
 
 const columns: Column[] = [

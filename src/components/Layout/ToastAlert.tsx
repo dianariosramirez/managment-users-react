@@ -13,6 +13,8 @@ export const ToastAlert = () => {
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
+  // Get the snackbar props from the app store and the function to set them
+
   const { setSnackbarProps, snackbarProps } = useAppStore();
 
   const handleClose = () => {

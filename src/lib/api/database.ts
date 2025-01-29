@@ -34,6 +34,7 @@ function createUser(
   };
 }
 
+// Generate 50 random users
 const generateUsers = () => {
   const users = [];
   for (let i = 1; i <= 50; i++) {
