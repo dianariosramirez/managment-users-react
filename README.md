@@ -32,9 +32,9 @@ Este proyecto es una aplicación web desarrollada con Next.js, con un enfoque en
 1.  **Clonar el repositorio**:
 
     ```
-    git clone https://github.com/.git
+    git clone https://github.com/dianariosramirez/managment-users-react.git
 
-    cd
+    cd managment-users-react
     ```
 
 2.  **Instalar dependencias**:
