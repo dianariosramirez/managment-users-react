@@ -1,4 +1,4 @@
-import { Control, FieldErrors, UseFormTrigger } from "react-hook-form";
+import { Control, UseFormTrigger } from "react-hook-form";
 import { z } from "zod";
 import userSchema from "../forms/userSchema";
 
@@ -22,7 +22,7 @@ export type FieldNameValues =
 /**
  * Base Props
  */
-interface BaseInputProps {
+export interface BaseInputProps {
   name: FieldNameValues;
   control: Control<Values>;
   placeholder: string;
@@ -74,8 +74,6 @@ export interface InputCustomProps extends BaseInputProps {
   menuItemList: { value: string; label: string }[];
   required: boolean;
 }
-
-export interface TextInputProps extends BaseInputProps {}
 
 export interface SelectInputProps extends BaseInputProps {
   menuItemList: { value: string; label: string }[];

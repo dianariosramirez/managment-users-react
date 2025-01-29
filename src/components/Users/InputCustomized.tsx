@@ -1,7 +1,7 @@
 import {
+  BaseInputProps,
   InputCustomProps,
   SelectInputProps,
-  TextInputProps,
 } from "@/lib/types";
 import { Box, MenuItem, TextField, Typography } from "@mui/material";
 import React from "react";
@@ -16,7 +16,7 @@ const InputTextCustom = ({
   helperText,
   placeholder,
   trigger,
-}: TextInputProps) => {
+}: BaseInputProps) => {
   return (
     <Controller
       control={control}
@@ -35,7 +35,7 @@ const InputTextCustom = ({
             field.onChange(e);
             trigger(name);
           }}
-          onBlur={(e) => {
+          onBlur={() => {
             trigger(name);
           }}
         />
@@ -70,7 +70,7 @@ const SelectorCustom = ({
             field.onChange(e);
             trigger(name);
           }}
-          onBlur={(e) => {
+          onBlur={() => {
             trigger(name);
           }}
           error={errors}

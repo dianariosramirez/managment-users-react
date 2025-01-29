@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import userSchema from "@/lib/forms/userSchema";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputCustomized } from "./InputCustomized";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
@@ -149,7 +149,9 @@ export const ModalUserForm = ({
           message: "User updated successfully",
           severity: "success",
         });
-        refreshTable && refreshTable();
+        if (refreshTable) {
+          refreshTable();
+        }
       } else {
         await UserService.AddNewUser(updatedValues);
         setSnackbarProps({
@@ -157,13 +159,15 @@ export const ModalUserForm = ({
           message: "User added successfully",
           severity: "success",
         });
-        refreshTable && refreshTable();
+        if (refreshTable) {
+          refreshTable();
+        }
       }
       handleCloseModal();
     } catch (error) {
       setSnackbarProps({
         open: true,
-        message: "Error adding or updating user",
+        message: ` Error adding or updating user${error}`,
         severity: "error",
       });
     }
