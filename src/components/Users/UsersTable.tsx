@@ -7,7 +7,6 @@ import {
   FilterVariables,
   SortBy,
   UserCompleteData,
-  UserData,
 } from "@/lib/types";
 import {
   Box,

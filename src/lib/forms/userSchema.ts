@@ -9,8 +9,8 @@ const userSchema = z.object({
     .min(1, { message: "Last Name is required and cannot be empty." }),
   middleName: z.string().optional(),
   email: z.string().email({ message: "Please provide a valid email address." }),
-  phoneNumber: z.string().regex(/^\+?[1-9]\d{1,10}$/, {
-    message: "Phone Number must be in a valid format (e.g., 1234567890).",
+  phoneNumber: z.string().regex(/^\d{10}$/, {
+    message: "Phone Number must be exactly 10 digits (e.g., 1234567890).",
   }),
   role: z.string().min(1, { message: "Role is required and cannot be empty." }),
   street: z

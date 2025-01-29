@@ -5,8 +5,6 @@ export class UserService {
   static GetUsersData = (
     variables: FilterVariables
   ): Promise<UserCompleteData[]> => {
-    console.log("service: Fetching user data...");
-
     return new Promise((resolve) => {
       setTimeout(() => {
         const result = API.GetUsers(variables);
@@ -17,8 +15,6 @@ export class UserService {
   };
 
   static CountTotalUsers = (): Promise<number> => {
-    console.log("service: Counting total users...");
-
     return new Promise((resolve) => {
       setTimeout(() => {
         const result = API.CountTotalUsers();
@@ -28,8 +24,6 @@ export class UserService {
   };
 
   static AddNewUser = (newUserData: UserCompleteData) => {
-    console.log("service: Adding new user...");
-
     return new Promise((resolve) => {
       setTimeout(() => {
         const result = API.AddUser(newUserData);
@@ -39,8 +33,6 @@ export class UserService {
   };
 
   static UpdateUser = (updatedUserData: UserCompleteData) => {
-    console.log("service: Updating user...");
-
     return new Promise((resolve) => {
       setTimeout(() => {
         const result = API.UpdateUser(updatedUserData);
@@ -50,8 +42,6 @@ export class UserService {
   };
 
   static DeleteUser = (userId: string) => {
-    console.log("service: Deleting user...");
-
     return new Promise((resolve) => {
       setTimeout(() => {
         const result = API.DeleteUser(userId);
@@ -82,7 +72,7 @@ export class UserService {
     if (data.success) {
       return data.data.url;
     } else {
-      throw new Error("Error al subir la imagen");
+      throw new Error("Error upload image");
     }
   };
 }

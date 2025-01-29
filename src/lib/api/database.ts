@@ -43,14 +43,14 @@ const generateUsers = () => {
       `Lastname ${i}`,
       "",
       `user${i}@example.com`,
-      1234567890 + i,
+      123456789 + i,
       i % 2 === 0 ? "Admin" : "User",
       i % 2 === 0 ? "Active" : "Inactive",
       `${i}`,
       `Street ${i}`,
       `Neighborhood ${i}`,
       `City ${i}`,
-      `PostalCode ${10000 + i}`,
+      "1000" + i,
       `https://robohash.org/${i}`,
       i % 2 === 0
     );

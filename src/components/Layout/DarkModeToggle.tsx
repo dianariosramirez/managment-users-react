@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Box, Icon, IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 
 import useAppStore from "@/lib/store/useAppStore";
 import { DarkMode, LightMode } from "@mui/icons-material";
